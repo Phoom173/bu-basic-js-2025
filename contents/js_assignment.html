@@ -19,6 +19,10 @@
       text-decoration: line-through;
       color: gray;
     }
+    .done {
+      text-decoration: line-through;
+      color: gray;
+    }
   </style>
 </head>
 
@@ -50,9 +54,9 @@
     <h2>MY Assignment Add To-Do list</h2>
 
     <input id="addText" type="text" placeholder="Please add text"/>
-    <input id="btnAdd" type="button" value="Add"/>
-    <input id="btnAdd" type="button" value="Clear all todos"/>
-    <table>
+    <input id="btnAdd" type="button" value="Add" onclick="addValue()"/>
+    <input id="btnClear" type="button" value="Clear all todos" onclick="ClearAllTodos()"/>
+    <table id="todoTable">
       <tbody>
         <tr>
           <th>To do list</th>
@@ -60,11 +64,42 @@
       </tbody>
     </table>
     <script>
-      function addValue(){
+      function addValue() {
+        const text = document.getElementById("addText").value.trim();
+        if (text === "") {
+          alert("Please enter a to-do item!");
+          return;
+        }
 
+        const table = document.getElementById("todoTable").getElementsByTagName("tbody")[0];
+        const newRow = table.insertRow(-1);
+
+        const cell = newRow.insertCell(0);
+      
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        
+        checkbox.addEventListener("change", function() {
+          if (this.checked) {
+            span.classList.add("done");
+          } else {
+            span.classList.remove("done");
+          }
+        });
+
+        const span = document.createElement("span");
+        span.textContent = " " + text;
+
+        cell.appendChild(checkbox);
+        cell.appendChild(span);
+
+        document.getElementById("addText").value = "";
       }
       function ClearAllTodos() {
-        
+        const table = document.getElementById("todoTable").getElementsByTagName("tbody")[0];
+        while (table.rows.length > 1) {
+        table.deleteRow(1);
+        }
       }
     </script>
 </body>
